@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ escape(handler.settings["site_title"]) }} - Everything{% end %}
+
+{% block content %}
+    <h2>Archive</h2>
+    <ul class="entries">
+        {% for entry in entries %}
+            <li>
+                <span class="meta">
+                    {{ locale.format_date(entry.time, full_format=True, shorter=True) }}
+                </span> &rarr; 
+                <a href="{{ entry.url }}">{{ escape(entry.title) }}</a>
+            </li>
+        {% end %}
+    </ul>
+{% end %}

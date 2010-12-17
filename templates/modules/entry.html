@@ -1,0 +1,23 @@
+<div class="entry">
+    <h2><a href="{{ entry.url }}">{{ escape(entry.title) }}</a></h2>
+
+    <div class="meta">
+        {{ locale.format_date(entry.time, full_format=True, shorter=True) }}
+        {% if entry.tags %}
+        in
+        <span class="tags">
+            {{ locale.list(['<a href="/tag/%(tag)s">%(escaped_tag)s</a>' % {"tag": tag, "escaped_tag": escape(tag)} for tag in sorted(entry.tags)]) }}
+        </span>
+        {% end %}
+        {% if current_user and current_user.administrator %}
+        <span class="control">
+            <a href="/bookmark?key={{ str(entry.key()) }}">{{ _("Edit") }}</a>
+            &mdash;
+            <a href="/delete?key={{ str(entry.key()) }}" class="delete">{{ _("Delete") }}</a>
+        </span>
+    {% end %}
+    </div>
+    <p>
+        {{ escape(entry.description) }}
+    </p>
+</div>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if import_success == 1 %}
+    <p class="success">Yay! Your delicious bookmarks were successfully imported!</p>
+    {% else %}
+        {% if import_success == 99 %}
+        <p class="success">Oh No! Your delicious bookmarks coulden't be
+        importeda! Please check your settings.py file</p>
+        {% end %}
+    {% end %}
+  {% for entry in entries %}
+    {{ modules.Entry(entry) }}
+  {% end %}
+  <div><a href="/archive">{{ _("Archive") }}</a></div>
+{% end %}
+
+{% block extrajs %}
+    {% if current_user and current_user.administrator %}
+    <script type="text/javascript">
+        function del_confirm(){
+            $('.delete').click(
+                function(){
+                    return confirm('{{_("Are you sure you wish to delete this entry?")}}');
+                }
+            );
+        };
+        $(document).ready(del_confirm);
+    </script>
+    {% end %}
+{% end %}

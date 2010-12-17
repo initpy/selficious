@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ escape(entry.title) }} - {{
+escape(handler.settings["site_title"]) }}{% end %}
+
+{% block content %}
+  {{ modules.Entry(entry) }}
+{% end %}
+
+{% block extrajs %}
+    {% if current_user and current_user.administrator %}
+    <script type="text/javascript">
+        function del_confirm(){
+            $('.delete').click(
+                function(){
+                    return confirm('{{_("Are you sure you wish to delete this entry?")}}');
+                }
+            );
+        };
+        $(document).ready(del_confirm);
+    </script>
+    {% end %}
+{% end %}

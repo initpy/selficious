@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ _("Import your delicious bookmarks") }}</h2>
+
+<form action="{{ request.path }}" method="post" class="import">
+    <p>
+        <label for="duser">Delicious Username</label>
+        <input name="duser" class="text" type="text" value="" id="duser"/>
+    </p>
+    <p>
+        <label for="dpswd">Delicious Password</label>
+        <input name="dpswd" class="text" type="password" value="" id="dpswd"/>
+    </p>
+
+    <p class="formfooter">
+    <input type="submit" value="{{ _("Import") }}" class="submit"/>
+    {{ xsrf_form_html() }}
+    </p>
+</form>
+{% end %}

@@ -1,0 +1,177 @@
+body, html {
+    margin:0;
+    padding:0;
+    color:#000;
+}
+
+body {
+    min-width:800px;
+    font-family:Arial, sans-serif;
+    font-size: 62.5%;
+    padding-top:1em;
+}
+
+#wrap {
+    margin:0px auto;
+    width:800px;
+    font-size:1.2em;
+    line-height:1.4em;
+}
+
+#header {
+    font-size:1em;
+    position:relative;
+    margin:20px 0;
+    margin-bottom:40px;
+}
+
+#header h1 {
+    margin:0;
+}
+
+#main {
+    float:left;
+    width:550px;
+    font-size:1em;
+    margin-top:3em;
+}
+
+.entry{
+    font-size:1.1em;
+    line-height:1.4em;
+    border-bottom:1px solid #eee;
+    margin-bottom:1em;
+}
+
+.meta , .footer{
+    font-size:.78em; 
+    margin-bottom:.714em;
+    color:#444;
+}
+
+#sidebar {
+    border-left:1px dotted #ccc;
+    float:right;
+    width:235px;
+    font-size:1em;
+}
+
+.section{
+    padding: .125em  0;
+    margin: 0 0 .125em 1.5em;
+}
+
+#sidebar ul {
+    list-style:none;
+    padding: .125em  0;
+    margin: .125em  0;
+}
+
+#footer {
+    font-size:.85em;
+    color:#444;
+    margin:2em 0 0 0;
+    border-top:1px solid #ddd;
+    clear:both;
+}
+#footer address {
+    font-style:normal;
+    padding:1em 0;
+}
+
+/*- typography -- */
+
+
+h1,h2,h3,h4,h5,h6 { 
+  color: #111; 
+}
+
+
+/* Typography
+-------------------------------------------------------------- */
+
+h1,h2,h3,h4,h5,h6 {
+    font-weight: normal; 
+    margin-bottom:.71em; 
+    letter-spacing:1px;
+}
+h1 {font-size:2em}
+h2 {font-size:1.1em}
+h3 {font-size:1.14em}
+h4 {font-size:1em}
+
+#sidebar h2 {
+    font-size:1.1em;
+    font-weight:normal;
+    text-transform:uppercase;
+    color: #555; 
+}
+
+p{
+    margin: 0 0 1em; 
+}
+
+a:focus, 
+a:hover     { color: #f20; text-decoration: underline;}
+a           { color: #00d; text-decoration:none;} 
+
+/* forms
+-------------------------------------------------------------- */
+
+label { font-weight: bold;}
+
+
+/* Text fields */
+input.text { width: 300px; margin:0.5em 0.5em 0.5em 0; }
+input.text { border:1px solid #bbb; background:#f6f6f6; padding:5px; }
+input.text:focus { border:1px solid #999; background:#fff; }
+
+/* Textareas */
+textarea            { width: 400px;  margin:0.5em 0.5em 0.5em 0; }
+textarea            { border:1px solid #bbb; background:#eee; padding:5px; }
+textarea:focus      { border:1px solid #999; background:#fff; }
+
+
+/* misc.
+-------------------------------------------------------------- */
+
+a img{
+    border:0;
+}
+.right{
+    float:right;
+    margin: 0 20px;
+}
+.left{
+    float:left;
+    margin: 0 10px 5px 0;
+}
+
+.clearboth{
+    clear:both;
+}
+.formfooter{
+    text-align:right;
+    border-top:1px solid #ddd;
+    padding-top:15px;
+}
+.two3rds{
+    width:75%;   
+}
+.control{
+    background-color:#f8f8f8;
+    border:1px solid #ccc;
+    padding:.25em;
+}
+ul.entries {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul.entries li {
+    margin-bottom: 1em;
+}
+ul.entries .title {
+    font-size:.85em;
+}
+
