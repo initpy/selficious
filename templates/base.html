@@ -39,21 +39,24 @@
 
     {% block side %}
 	<div id="sidebar">
-        {% if current_user and current_user.administrator %}
         <div class="section">
             <ul>
+                {% if current_user and current_user.administrator %}
+                <li><a href="{{ users.create_logout_url(request.uri) }}">Sign out</a></li>
                 <li><a href="/bookmark">Post a new bookmarkw</a></li>
                 <li><a href="/import">Import your delicious</a></li>
+                {% else %}
+                <li><a href="{{ users.create_login_url(request.uri) }}"><strong>Login</strong></a></li>
+                {% end %}
             </ul>
         </div>
-        {% end %}
         <div class="section two3rds">
             <h2>What is this?</h2>
             This is a simple application hosted on appengine that helped me 
             backup -quickly!- my delicious bookmarks and manage (add, edit,
             delete) them and my future ones.
-            Gimme some moments to clean the code and you'll be able to have your copy by 
-            <a href="http://github.com/initpy/selficious">Forking it on github</a>.
+            You can have your own copy by 
+            <a href="http://github.com/initpy/selficious">forking it on github</a>.
 
             <h2>Who made it?</h2>
             Yuuta did. You can follow him on twitter at 
