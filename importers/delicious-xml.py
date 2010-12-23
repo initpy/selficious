@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 #
 # This is SELFICIOUS by Yuuta
-# UPDATED: 2010-12-23 18:58:32
+# UPDATED: 2010-12-23 20:53:41
 
 import urllib2
 import base64
@@ -16,10 +16,7 @@ class DeliciousLocalXMLImporter(BaseImporter):
     Imports bookmarks from an XML file saved from delicious. To get this kind of
     files, visit <a
     href="https://api.del.icio.us/v1/posts/all">http://api.del.icio.us/v1/posts/all
-    </a> (if you're an old delicious user) or <a
-    href="https://api.del.icio.us/v2/posts/all">http://api.del.icio.us/v2/posts/all
-    </a> (if you're using delicious with your yahoo credentials &mdah;Be sure to
-    be logged in (yahoo) first) 
+    </a> (if you're an old delicious user) 
     """
     service_name = 'delicious-xml'
     service_verbose_name = "Local XML file saved from delicious"
