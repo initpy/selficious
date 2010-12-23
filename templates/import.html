@@ -1,22 +1,46 @@
 {% extends "base.html" %}
 
+
+{% block extrajs %}
+<script type="text/javascript">
+    function showSelectedForm(){
+        var name = $('#service').val();
+        $('.formpart').hide();
+        $('#'+name).show();
+    };
+    function toggleForm(){
+        showSelectedForm();
+        $('#service').change(showSelectedForm);
+    };
+    $(document).ready(toggleForm);
+</script>
+{% end %}
+
+
 {% block content %}
-
-<h2>{{ _("Import your delicious bookmarks") }}</h2>
-
-<form action="{{ request.path }}" method="post" class="import">
+<h2>{{ _("Import your stuff") }}</h2>
+<div class="form">
+<form action="{{ request.path }}" method="post" class="import" enctype="multipart/form-data">
     <p>
-        <label for="duser">Delicious Username</label>
-        <input name="duser" class="text" type="text" value="" id="duser"/>
+        <label for="service">Service</label>
+        <select name="service" id="service">
+        {% for service in services %}
+            <option value="{{service['name']}}">{{service['verbose_name']}}</option>
+        {% end %}
+        </select>
     </p>
-    <p>
-        <label for="dpswd">Delicious Password</label>
-        <input name="dpswd" class="text" type="password" value="" id="dpswd"/>
-    </p>
+
+    {% for service in services %}
+    <div id="{{ service['name'] }}" class="formpart hidden">
+        <p class="description">{{ service['description'] }}</p>
+        {{ service['form'] }}
+    </div>
+    {% end %}
 
     <p class="formfooter">
     <input type="submit" value="{{ _("Import") }}" class="submit"/>
     {{ xsrf_form_html() }}
     </p>
 </form>
+</div>
 {% end %}

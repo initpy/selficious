@@ -2,33 +2,11 @@
 # -*- coding: utf-8 -*- 
 #
 # This is SELFICIOUS by Yuuta
-# UPDATED: 2010-12-17 15:55:46
+# UPDATED: 2010-12-22 22:28:40
 
 import logging
-import datetime
-import urllib
-from xml.dom import minidom
-import dateutil.parser
-import tornado.web
-from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 
-
-def parse_xml_bookmarks(data):
-    """Parses delcicious xml export and returns a list of bookmarks"""
-    bookmarks = []
-    dom = minidom.parseString(data)
-    for node in dom.getElementsByTagName('post'):
-        bookmarks.append({
-            'hash':node.getAttribute('hash'),
-            'url':node.getAttribute('href'),
-            'title':node.getAttribute('description'),
-            'description':node.getAttribute('extended'),
-            'tags':node.getAttribute('tag').split(' '),
-            'time':dateutil.parser.parse(node.getAttribute('time'))
-        })
-    return bookmarks
-    
 def keygen(format, *args, **kwargs):
     """generates a key from args and kwargs using format"""
     allargs = args+tuple(kwargs[key] for key in sorted(kwargs.keys()))

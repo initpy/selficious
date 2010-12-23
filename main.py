@@ -2,12 +2,10 @@
 # -*- coding: utf-8 -*- 
 #
 # This is SELFICIOUS by Yuuta
-# UPDATED: 2010-12-17 15:55:54
+# UPDATED: 2010-12-23 19:08:39
 
 import logging
-import base64
-import urllib2
-import uuid
+import hashlib
 import functools
 import os
 import os.path
@@ -19,16 +17,19 @@ import wsgiref.handlers
 
 from google.appengine.api import users
 from google.appengine.ext import db
-from google.appengine.api import urlfetch
 
-from utils import parse_xml_bookmarks, memoize, unmemoize
+from utils import memoize, unmemoize
+import importers
 import settings
-
-DELICIOUS_XML_EXPORT = "https://api.del.icio.us/v1/posts/all"
 
 
 class Entry(db.Model):
-    """A single bookmark entry."""
+    """
+    A single entry.
+    service: the service's name from which the entry comes -may be empty
+    hash: a hash (sha1) of the url
+    """
+    service = db.StringProperty(required=False)
     hash = db.StringProperty(required=True)
     title = db.StringProperty(required=True)
     description = db.TextProperty()
@@ -105,11 +106,9 @@ class HomeHandler(BaseHandler):
     def get(self):
         entries = self.get_home_entries()
         import_success = self.get_argument('imported', None)
-        if not entries:
-            if not self.current_user or self.current_user.administrator:
-                self.redirect("/bookmark")
-                return
-        self.render("home.html", entries=entries, import_success=import_success)
+        error = self.get_argument('error', "")
+        self.render("home.html", entries=entries, import_success=import_success,
+                error_message=importers.messages[error])
 
 
 class ArchiveHandler(BaseHandler):
@@ -140,11 +139,14 @@ class BookmarkHandler(BaseHandler):
             entry.description = self.get_argument("description", "")
             entry.url = self.get_argument("url", "")
         else:
+            h = hashlib.sha1()
+            h.update(self.get_argument("url", ""))
             entry = Entry(
+                service="internal",
                 title=self.get_argument("title", ""),
                 description=self.get_argument("description", ""),
                 url=self.get_argument("url", ""),
-                hash=uuid.uuid4().hex,
+                hash=h.hexdigest(),
             )
         tags = set([self.slugify(unicode(tag)) for tag in
             self.get_argument("tags", "").split(",")])
@@ -158,38 +160,38 @@ class BookmarkHandler(BaseHandler):
 class ImportHandler(BaseHandler):
     @administrator
     def get(self):
-        self.render("import.html")
+        services = importers.list()
+        self.render("import.html", services=services)
 
     @administrator
     def post(self):
-        duser = self.get_argument("duser")
-        dpswd = self.get_argument("dpswd")
+        service = self.get_argument("service", "")
         try:
-            base64string = base64.encodestring('%s:%s' % (duser, dpswd))[:-1]
-            headers = {
-                    "Authorization": "Basic %s" % base64string,
-                }
-            result = urlfetch.fetch(DELICIOUS_XML_EXPORT, headers=headers)
-            self._save_bookmarks(result.content)
-        except:
-            self.redirect("/?imported=99")
+            service_class = importers.new(service)
+            importer = service_class(self)
+            posts = importer.posts()
+            if importer.success:
+                self._save_posts(posts, service)
+                self.redirect("/?imported=1")
+            else:
+                self.redirect("/?imported=0&error=%s"%importer.error)
+        except NotImplementedError:
+            self.redirect("/?imported=0&error=unknown_service")
 
-    def _save_bookmarks(self, data):
-        bookmarks = parse_xml_bookmarks(data)
-        for bookmark in bookmarks:
+    def _save_posts(self, posts, service):
+        for post in posts:
             entry = Entry(
-                hash=bookmark['hash'],
-                url=bookmark['url'],
-                title=bookmark['title'],
-                description=bookmark['description'],
-                time=bookmark['time'],
-                tags = [db.Category(tag) for tag in bookmark['tags'] if tag ]
+                service=service,
+                hash=post['hash'],
+                url=post['url'],
+                title=post['title'],
+                description=post['description'],
+                time=post['time'],
+                tags = [db.Category(tag) for tag in post['tags'] if tag ]
             )
             entry.put()
         self.free_cache()
-        self.redirect("/?imported=1")
         
-
 
 class DeleteHandler(BaseHandler):
     @administrator
@@ -221,7 +223,7 @@ application = tornado.wsgi.WSGIApplication([
     (r"/", HomeHandler),
     (r"/archive", ArchiveHandler),
     (r"/tag/([^/]+)/?", TagHandler),
-    (r"/bookmark", BookmarkHandler),
+    (r"/post", BookmarkHandler),
     (r"/import", ImportHandler),
     (r"/index", tornado.web.RedirectHandler, {"url": "/archive"}),
     (r"/delete", DeleteHandler),
