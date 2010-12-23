@@ -1,6 +1,5 @@
 <div class="entry">
-    <h2><a href="{{ entry.url }}">{{ escape(entry.title) }}</a></h2>
-
+    <h3><a href="{{ entry.url }}">{{ escape(entry.title) }}</a></h3>
     <div class="meta">
         {{ locale.format_date(entry.time, full_format=True, shorter=True) }}
         {% if entry.tags %}
@@ -11,7 +10,7 @@
         {% end %}
         {% if current_user and current_user.administrator %}
         <span class="control">
-            <a href="/bookmark?key={{ str(entry.key()) }}">{{ _("Edit") }}</a>
+            <a href="/post?key={{ str(entry.key()) }}">{{ _("Edit") }}</a>
             &mdash;
             <a href="/delete?key={{ str(entry.key()) }}" class="delete">{{ _("Delete") }}</a>
         </span>

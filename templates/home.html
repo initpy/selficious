@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if import_success == 1 %}
-    <p class="success">Yay! Your delicious bookmarks were successfully imported!</p>
+    {% if import_success == "1" %}
+    <p class="message ok">Yay! Your posts were successfully imported!</p>
     {% else %}
-        {% if import_success == 99 %}
-        <p class="success">Oh No! Your delicious bookmarks coulden't be
-        importeda! Please check your settings.py file</p>
+        {% if import_success == "0" %}
+        <p class="message error">Oh No! Your posts coulden't be imported! {{ _(error_message) }}</p>
         {% end %}
     {% end %}
   {% for entry in entries %}

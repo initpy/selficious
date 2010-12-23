@@ -1,17 +1,22 @@
 {% set site_title = escape(handler.settings["site_title"]) %}
+{% set debug = handler.settings["debug"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{% block title %}{{site_title}}{% end %}</title>
-    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
     <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" title="main" charset="utf-8" />
     {% block extrameta %}{% end %}
     {% block extracss %}{% end %}
 
     {% block pagejs %}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        {% if debug %}
+            <script type="text/javascript" src="/static/js/jquery-1.4.4.min.js"></script>
+        {% else %}
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        {% end %}
     {% end %}
     {% block extrajs %}{% end %}
 </head>
@@ -22,7 +27,7 @@
     <div id="header">
         <h1>
             <a href="/" title="SELFICIOUS">
-                <img src="/static/images/logo.png" alt="Selficious" width="336" height="88" />
+                <img src="/static/images/logo.png" alt="Selficious" width="315" height="72" />
             </a>
         </h1>
     </div>
@@ -43,8 +48,8 @@
             <ul>
                 {% if current_user and current_user.administrator %}
                 <li><a href="{{ users.create_logout_url(request.uri) }}">Sign out</a></li>
-                <li><a href="/bookmark">Post a new bookmarkw</a></li>
-                <li><a href="/import">Import your delicious</a></li>
+                <li><a href="/post">Post something new</a></li>
+                <li><a href="/import">Import your stuff</a></li>
                 {% else %}
                 <li><a href="{{ users.create_login_url(request.uri) }}"><strong>Login</strong></a></li>
                 {% end %}
@@ -54,19 +59,16 @@
             <h2>What is this?</h2>
             This is a simple application hosted on appengine that helped me 
             backup -quickly!- my delicious bookmarks and manage (add, edit,
-            delete) them and my future ones.
-            You can have your own copy by 
+            delete) them and my future ones.  You can have your own copy by 
             <a href="http://github.com/initpy/selficious">forking it on github</a>.
 
             <h2>Who made it?</h2>
             Yuuta did. You can follow him on twitter at 
             <a href="http://twitter.com/initpy">@initpy</a>. &mdash;Yes, I also
-            started a <a href="http://big.appspot.com">blog</a>. 
-            So stay tuned :)
+            have a <a href="http://big.appspot.com">blog</a>. So stay tuned :)
         </div>
     </div>
     {% end %}
 </div>
 </body>
 </html>
-

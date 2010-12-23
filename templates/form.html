@@ -2,8 +2,9 @@
 
 {% block content %}
 
-<h2>{{ _("Edit this bookmark") if entry else _("Post a new bookmark") }}</h2>
+<h2>{{ _("Edit this post") if entry else _("Post Something New ") }}</h2>
 
+<div class="form">
 <form action="{{ request.path }}" method="post" class="compose">
     <p>
         <label for="title">Title</label>
@@ -27,11 +28,12 @@
 
     <p class="formfooter">
         <input type="submit" value="{{ _("Save changes") if entry else _("Publish Bookmark") }}" class="submit"/>
-        &nbsp;<a href="{{ "/" + entry.url if entry else "/" }}">{{ _("Cancel") }}</a>
+        &nbsp;<a href="/">{{ _("Cancel") }}</a>
     </p>
     {% if entry %}
     <input type="hidden" name="key" value="{{ str(entry.key()) }}"/>
     {% end %}
     {{ xsrf_form_html() }}
 </form>
+</div>
 {% end %}
